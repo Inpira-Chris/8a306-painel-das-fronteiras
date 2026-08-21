@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Central das Fronteiras — 8º Ano · 3º Bimestre</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+button,[onclick]{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+:root{--blue:#4A90D9;--txt:#1a1a1a;--txt2:#555;--txt3:#888;--bg:#f4f4f0;--card:#fff;--card2:#f0f0eb;
+--border:rgba(0,0,0,0.12);--border2:rgba(0,0,0,0.22);--info-bg:#e8f0fb;--info-txt:#1a4fa0;
+--ok-bg:#dcfce7;--ok-txt:#15803d;--ok-border:#22c55e;--err-bg:#fee2e2;--err-txt:#b91c1c;--err-border:#ef4444;
+--warn-bg:#fef9c3;--warn-txt:#854d0e;--warn-border:#eab308;--r:10px;--r2:14px}
+@media(prefers-color-scheme:dark){:root{--txt:#f0f0f0;--txt2:#aaa;--txt3:#777;--bg:#18181b;--card:#27272a;--card2:#323236;
+--border:rgba(255,255,255,0.1);--border2:rgba(255,255,255,0.22);--info-bg:#1a2f50;--info-txt:#7eb3f5;
+--ok-bg:#14321e;--ok-txt:#4ade80;--err-bg:#3b1212;--err-txt:#f87171;--warn-bg:#2d2000;--warn-txt:#fbbf24}}
+body{font-family:'Segoe UI',Inter,Arial,sans-serif;background:var(--bg);color:var(--txt);font-size:16px;line-height:1.6;min-height:100vh;display:flex;flex-direction:column}
+.wrap{max-width:820px;margin:0 auto;padding:1.5rem 1.25rem;flex:1;width:100%}
+.site-header{background:var(--card);border-bottom:0.5px solid var(--border);padding:1rem 1.25rem;text-align:center}
+.site-header h1{font-size:22px;font-weight:600}
+.site-header p{font-size:14px;color:var(--txt2);margin-top:3px}
+.nav{display:flex;gap:8px;margin-bottom:1.75rem;flex-wrap:wrap;justify-content:center}
+.nav-btn{padding:10px 22px;min-height:44px;border:1px solid var(--border2);border-radius:22px;background:transparent;cursor:pointer;font-size:15px;color:var(--txt2);transition:.2s;font-family:inherit}
+.nav-btn.active{background:var(--info-bg);color:var(--info-txt);border-color:transparent;font-weight:600}
+.section{display:none}.section.active{display:block}
+h2{font-size:20px;font-weight:600;margin-bottom:1.1rem}
+h3{font-size:17px;font-weight:600;margin:1.4rem 0 .6rem}
+p{font-size:15px;color:var(--txt2);line-height:1.7}
+.card{background:var(--card);border:0.5px solid var(--border);border-radius:var(--r2);padding:1.5rem;margin-bottom:1.25rem}
+.card-sm{background:var(--card2);border:0.5px solid var(--border);border-radius:var(--r);padding:1.1rem;margin-bottom:1rem}
+.steps{display:flex;flex-direction:column;gap:12px;margin-top:.9rem}
+.step{display:flex;gap:12px;align-items:flex-start}
+.step-n{width:30px;height:30px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:800;flex-shrink:0}
+.step-txt{font-size:15px;color:var(--txt2);line-height:1.6;padding-top:3px}
+.q-progress{display:flex;gap:6px;margin-bottom:1.25rem;flex-wrap:wrap}
+.q-dot{width:14px;height:14px;border-radius:50%;background:var(--border2);transition:.3s}
+.q-dot.cur{background:var(--blue)}.q-dot.ok{background:var(--ok-border)}.q-dot.err{background:var(--err-border)}
+.q-text{font-size:16px;line-height:1.65;margin-bottom:1.1rem;font-weight:500}
+.q-opts{display:grid;gap:9px}
+.q-opt{padding:12px 16px;min-height:48px;border:1px solid var(--border2);border-radius:var(--r);cursor:pointer;font-size:15px;color:var(--txt2);background:var(--card);text-align:left;transition:.2s;font-family:inherit;line-height:1.5}
+.q-opt:hover{background:var(--card2);color:var(--txt)}
+.q-opt.ok{background:var(--ok-bg);border-color:var(--ok-border);color:var(--ok-txt)}
+.q-opt.err{background:var(--err-bg);border-color:var(--err-border);color:var(--err-txt)}
+.q-opt.dis{cursor:default;pointer-events:none}
+.q-nav{display:flex;justify-content:space-between;align-items:center;margin-top:1.1rem}
+.btn{padding:11px 20px;min-height:48px;border:1px solid var(--border2);border-radius:var(--r);background:transparent;cursor:pointer;font-size:15px;color:var(--txt2);transition:.2s;font-family:inherit}
+.btn:hover{background:var(--card2);color:var(--txt)}
+.btn-p{background:var(--info-bg);border-color:transparent;color:var(--info-txt);font-weight:600}
+.q-ctr{font-size:14px;color:var(--txt3)}
+.score-box{text-align:center;padding:3rem 1rem;background:var(--card);border-radius:var(--r2);border:0.5px solid var(--border);display:none}
+.score-n{font-size:56px;font-weight:700}
+.score-s{font-size:15px;color:var(--txt2);margin-top:.5rem}
+.balloon-overlay{position:fixed;inset:0;background:rgba(0,0,0,.5);display:none;align-items:center;justify-content:center;padding:1.25rem;z-index:999}
+.balloon-overlay.show{display:flex}
+.balloon-box{background:var(--card);border-radius:var(--r2);padding:1.75rem 1.5rem;max-width:430px;width:100%;text-align:center;box-shadow:0 12px 40px rgba(0,0,0,.25);border-top:5px solid var(--ok-border);animation:pop .25s ease}
+.balloon-overlay.err .balloon-box{border-top-color:var(--err-border)}
+@keyframes pop{from{transform:scale(.9);opacity:0}to{transform:scale(1);opacity:1}}
+.balloon-emoji{font-size:42px;margin-bottom:.5rem}
+.balloon-title{font-size:18px;font-weight:700;margin-bottom:.6rem}
+.balloon-msg{font-size:14.5px;color:var(--txt2);line-height:1.7;margin-bottom:1.4rem;text-align:left}
+.balloon-btn{width:100%;padding:13px;font-size:15px}
+footer{background:var(--card);border-top:0.5px solid var(--border);padding:1.1rem 1.25rem calc(1.1rem + env(safe-area-inset-bottom));text-align:center;margin-top:auto}
+footer p{font-size:14px;color:var(--txt2)}
+footer a{color:var(--info-txt);text-decoration:none;font-weight:600}
+.fs-menu{display:grid;grid-template-columns:1fr;gap:12px;margin-bottom:1rem}
+@media(min-width:600px){.fs-menu{grid-template-columns:1fr 1fr}}
+.fs-card{position:relative;text-align:left;padding:1.15rem 1.2rem;border-radius:var(--r2);border:1.5px solid var(--border2);background:var(--card);cursor:pointer;font-family:inherit;transition:.2s;min-height:150px;display:flex;flex-direction:column}
+.fs-card:hover:not(:disabled){border-color:var(--blue);transform:translateY(-3px);box-shadow:0 8px 22px rgba(74,144,217,.18)}
+.fs-card:active:not(:disabled){transform:scale(.98)}
+.fs-card:focus-visible{outline:3px solid var(--blue);outline-offset:2px}
+.fs-card:disabled{cursor:default;border-color:var(--ok-border);background:linear-gradient(160deg,var(--ok-bg),var(--card))}
+.fs-card-e{font-size:32px;line-height:1;margin-bottom:.5rem}
+.fs-card-n{font-size:16px;font-weight:800;color:var(--txt);margin-bottom:.25rem}
+.fs-card-d{font-size:13px;color:var(--txt2);line-height:1.55;flex:1}
+.fs-card-f{margin-top:.7rem;font-size:12px;font-weight:800;color:var(--info-txt)}
+.fs-card:disabled .fs-card-f{color:var(--ok-txt)}
+.fs-selo{position:absolute;top:10px;right:10px;background:var(--ok-border);color:#fff;font-size:10.5px;font-weight:900;padding:3px 9px;border-radius:20px}
+/* ══════════ PRÁTICA — "CENTRAL DAS FRONTEIRAS" ══════════
+   Fase 1 · Terminal (estilo Atari): um canvas em pixel art mostra um
+   posto de fronteira. Uma pessoa desce do ônibus com sua ficha e o
+   agente decide para qual GUICHÊ encaminhar — atração ou repulsão.
+   A pessoa caminha pixel a pixel até o guichê escolhido.
+   Fase 2 · Sala de Crise: casos reais de desastre climático, com
+   causa e impacto para classificar. */
+.cf-wrap{max-width:660px;margin:0 auto}
+.cf-instructions{background:var(--info-bg);border:1px solid var(--border);border-radius:var(--r);padding:12px 14px;font-size:13.5px;color:var(--info-txt);line-height:1.6;margin-bottom:1rem}
+.cf-hud{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-bottom:1rem}
+.cf-chip{background:var(--card2);border:1px solid var(--border);color:var(--txt2);font-size:12.5px;font-weight:700;padding:7px 14px;border-radius:20px}
+/* console arcade */
+.cf-console{background:#14161f;border-radius:14px;padding:13px 13px 10px;border:2px solid #262a38;box-shadow:0 14px 32px rgba(0,0,0,.36),inset 0 0 0 2px #0b0d14}
+.cf-tela{position:relative;background:#000;border-radius:5px;overflow:hidden;border:3px solid #080a10;box-shadow:inset 0 0 20px rgba(0,0,0,.85)}
+#cfCanvas{display:block;width:100%;height:auto;image-rendering:pixelated;image-rendering:crisp-edges;touch-action:manipulation}
+.cf-bezel{display:flex;justify-content:space-between;align-items:center;margin-top:8px;font-family:ui-monospace,monospace;font-size:10px;letter-spacing:.13em;color:#7f88b0;text-transform:uppercase}
+.cf-led{display:inline-block;width:7px;height:7px;border-radius:50%;background:#3ddc84;box-shadow:0 0 7px #3ddc84;margin-right:6px;vertical-align:middle;animation:cfLed 2.1s ease-in-out infinite}
+@keyframes cfLed{0%,100%{opacity:1}50%{opacity:.35}}
+.cf-ficha{background:#0d1016;border:1px solid #262e3a;border-radius:8px;padding:11px 13px;margin:10px 0}
+.cf-ficha-h{font-family:ui-monospace,monospace;font-size:10px;color:#5d67a0;letter-spacing:.12em;text-transform:uppercase;margin-bottom:5px;display:flex;justify-content:space-between;gap:8px}
+.cf-ficha-t{font-family:ui-monospace,monospace;font-size:clamp(12.5px,3.4vw,14px);color:#b8e6a0;line-height:1.55}
+.cf-ficha-t b{color:#f2f7c0}
+.cf-ask{margin-top:9px;background:#14304a;border:1px solid #4a90d9;border-left:4px solid #4a90d9;border-radius:7px;padding:9px 11px}
+.cf-ask-l{font-family:ui-monospace,monospace;font-size:9.5px;color:#7fb2e8;letter-spacing:.12em;text-transform:uppercase;display:block;margin-bottom:3px}
+.cf-ask-q{font-size:clamp(13px,3.6vw,15px);color:#e6f2ff;font-weight:700;line-height:1.4}
+.cf-guiches{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-bottom:10px}
+.cf-gb{min-height:62px;padding:10px;border:1.5px solid #2c333d;border-radius:9px;background:#1b1f27;color:#a8bcd0;font-size:13px;font-weight:800;font-family:inherit;cursor:pointer;transition:.16s;line-height:1.3}
+.cf-gb small{display:block;font-size:10px;font-weight:600;color:#5d7c90;margin-top:3px}
+.cf-gb:hover:not(:disabled){border-color:#4a90d9;color:#e6f2ff}
+.cf-gb:active:not(:disabled){transform:scale(.96)}
+.cf-gb:disabled{cursor:default}
+.cf-gb:focus-visible{outline:3px solid #4a90d9;outline-offset:2px}
+.cf-gb.ok{background:#123322;border-color:#22c55e;color:#b6f0c9}
+.cf-gb.err{background:#3a1417;border-color:#ef4444;color:#f8b4b4}
+.cf-eixo{margin-bottom:9px}
+.cf-eixo-l{font-family:ui-monospace,monospace;font-size:10px;color:#5d67a0;text-transform:uppercase;letter-spacing:.1em;margin-bottom:5px}
+.cf-eixo-g{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+@media(min-width:520px){.cf-eixo-g{grid-template-columns:1fr 1fr 1fr 1fr}}
+.cf-eb{min-height:54px;padding:9px 8px;border:1.5px solid #2c333d;border-radius:9px;background:#1b1f27;color:#a8bcd0;font-size:11.5px;font-weight:800;font-family:inherit;cursor:pointer;transition:.16s;line-height:1.3}
+.cf-eb:hover:not(:disabled){border-color:#4a90d9;color:#e6f2ff}
+.cf-eb:active:not(:disabled){transform:scale(.96)}
+.cf-eb:disabled{cursor:default}
+.cf-eb:focus-visible{outline:3px solid #4a90d9;outline-offset:2px}
+.cf-eb.sel{background:#14304a;border-color:#4a90d9;color:#cfe6ff}
+.cf-eb.ok{background:#123322;border-color:#22c55e;color:#b6f0c9}
+.cf-eb.err{background:#3a1417;border-color:#ef4444;color:#f8b4b4}
+.cf-lever{width:100%;min-height:52px;border-radius:10px;border:1.5px solid #2c333d;background:linear-gradient(180deg,#2a323d,#1d232b);color:#7f9ab0;font-size:13.5px;font-weight:800;font-family:inherit;cursor:pointer;transition:.18s}
+.cf-lever.armed{background:linear-gradient(180deg,#1f6f4a,#14563a);border-color:#3ddc84;color:#d9ffe9;box-shadow:0 0 0 2px rgba(61,220,132,.25)}
+.cf-lever:disabled{cursor:default;opacity:.6}
+.cf-fb{margin-top:11px;border-radius:9px;padding:12px 13px;font-size:13px;line-height:1.62;font-family:ui-monospace,monospace}
+.cf-fb.ok{background:#123322;color:#b6f0c9;border:1px solid #22c55e}
+.cf-fb.err{background:#3a1417;color:#f8b4b4;border:1px solid #ef4444}
+.cf-continuar{width:100%;min-height:52px;margin-top:10px;border-radius:10px;border:1.5px solid #4a90d9;background:linear-gradient(180deg,#1f4d78,#153a5c);color:#e6f2ff;font-size:14.5px;font-weight:800;font-family:inherit;cursor:pointer;transition:.18s;animation:cfP 1.7s ease-in-out infinite}
+.cf-continuar:hover{background:linear-gradient(180deg,#2a6299,#1b4a73)}
+.cf-continuar:active{transform:translateY(2px)}
+.cf-continuar:focus-visible{outline:3px solid #7fb2e8;outline-offset:2px}
+@keyframes cfP{0%,100%{box-shadow:0 0 0 0 rgba(74,144,217,.45)}50%{box-shadow:0 0 0 7px rgba(74,144,217,0)}}
+.cf-report{text-align:center;padding:1.75rem 1rem;background:var(--card);border-radius:var(--r2);border:0.5px solid var(--border)}
+.score-line{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--txt2);background:var(--card2);border-radius:8px;padding:8px 12px}
+.score-line.total{color:var(--ok-txt);background:var(--ok-bg);font-size:14px}
+.score-line .sv{margin-left:auto;font-weight:800}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms !important;animation-iteration-count:1 !important;transition-duration:.01ms !important}}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div style="display:flex;align-items:center;justify-content:center;gap:12px"><h1>🛂 Central das Fronteiras</h1></div>
+  <div style="display:flex;align-items:center;justify-content:center;gap:10px;margin-top:4px">
+    <p style="margin:0">Geografia — 8º Ano &nbsp;|&nbsp; 3º Bimestre &nbsp;|&nbsp; Aulas 11 a 12</p>
+    <button id="sfx-btn" onclick="toggleSfx()" title="Ativar/desativar sons" aria-label="Ativar ou desativar sons"
+      style="background:var(--info-bg);border:1px solid var(--border);cursor:pointer;width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;color:var(--info-txt);flex-shrink:0">🔊</button>
+  </div>
+</header>
+
+<div class="wrap">
+  <div class="nav">
+    <button class="nav-btn active" onclick="show('tutorial')">📖 Tutorial</button>
+    <button class="nav-btn" onclick="show('quiz')">🧠 Quiz</button>
+    <button class="nav-btn" onclick="show('pratica')">🛂 Prática</button>
+  </div>
+
+  <div id="tutorial" class="section active">
+    <h2>Migrações na América e desastres climáticos</h2>
+    <div class="card">
+      <p>Alguns países <strong style="color:var(--txt)">puxam</strong> gente para dentro; outros <strong style="color:var(--txt)">empurram</strong> gente para fora. É a lógica de atração e repulsão que organiza os fluxos migratórios do continente americano.</p>
+      <div class="steps" style="margin-top:1rem">
+        <div class="step"><div class="step-n" style="background:var(--ok-bg);color:var(--ok-txt)">🧲</div><div class="step-txt"><strong style="color:var(--txt)">Área de atração.</strong> Recebe mais gente do que perde, por oferecer estabilidade econômica e política. Na América: Estados Unidos, Canadá, Brasil, Argentina, Chile, Costa Rica e Panamá.</div></div>
+        <div class="step"><div class="step-n" style="background:var(--err-bg);color:var(--err-txt)">📤</div><div class="step-txt"><strong style="color:var(--txt)">Área de repulsão.</strong> Perde população por crise econômica, instabilidade política ou violência. Na América: Guatemala, Honduras, El Salvador, Venezuela, Colômbia, Equador e Haiti.</div></div>
+      </div>
+      <div class="card-sm" style="border-left:4px solid var(--warn-border);margin-top:1rem;margin-bottom:0">
+        <strong style="color:var(--txt);font-size:14px">Não é fixo:</strong>
+        <span style="font-size:14px;color:var(--txt2)"> a Venezuela já foi área de <strong style="color:var(--txt)">atração</strong> na América do Sul, recebendo migrantes na época do auge do petróleo. A crise econômica inverteu o sinal. Um país pode mudar de lado.</span>
+      </div>
+    </div>
+
+    <h3>🌪️ Quando o clima expulsa</h3>
+    <div class="card">
+      <p>Além de economia e política, eventos climáticos extremos forçam gente a sair de casa. Quando isso acontece <strong style="color:var(--txt)">dentro do próprio país</strong>, sem cruzar fronteira internacional, chama-se <strong style="color:var(--txt)">deslocamento interno</strong>.</p>
+      <div class="card-sm" style="border-left:4px solid var(--err-border);margin-top:1rem">
+        <span style="font-size:14px;color:var(--txt2)">Segundo o relatório <strong style="color:var(--txt)">GRID 2025</strong> do IDMC, desastres provocaram cerca de <strong style="color:var(--txt)">45,8 milhões de deslocamentos internos</strong> em 2024 — o maior número já registrado desde o início do monitoramento, em 2008. E cerca de <strong style="color:var(--txt)">99,5%</strong> deles tiveram origem em eventos climáticos.</span>
+      </div>
+      <div class="steps">
+        <div class="step"><div class="step-n" style="background:var(--warn-bg);color:var(--warn-txt)">🌀</div><div class="step-txt"><strong style="color:var(--txt)">Ciclone Freddy (Moçambique, 2023).</strong> Um dos ciclones mais longos já registrados. Ventos e chuvas destruíram moradias em massa.</div></div>
+        <div class="step"><div class="step-n" style="background:var(--warn-bg);color:var(--warn-txt)">🌊</div><div class="step-txt"><strong style="color:var(--txt)">Enchentes no Sudão do Sul.</strong> Cheias de meses inundaram áreas agrícolas: o deslocamento se prolongou porque as plantações foram perdidas.</div></div>
+        <div class="step"><div class="step-n" style="background:var(--warn-bg);color:var(--warn-txt)">🌧️</div><div class="step-txt"><strong style="color:var(--txt)">Chuvas no Rio Grande do Sul (2024).</strong> Volume muito acima do esperado em poucos dias causou cheias históricas e a evacuação de cidades inteiras.</div></div>
+        <div class="step"><div class="step-n" style="background:var(--warn-bg);color:var(--warn-txt)">⛈️</div><div class="step-txt"><strong style="color:var(--txt)">Tempestade tropical Sara (Honduras).</strong> Chuvas intensas alagaram comunidades ribeirinhas, com deslocamento temporário.</div></div>
+      </div>
+      <div class="card-sm" style="border-left:4px solid var(--info-txt);margin-bottom:0">
+        <strong style="color:var(--txt);font-size:14px">🛂 Na Prática:</strong>
+        <span style="font-size:14px;color:var(--txt2)"> duas fases, e você escolhe a ordem. No <strong style="color:var(--txt)">Terminal</strong>, você é o agente do posto de fronteira: cada pessoa chega com uma ficha e você a encaminha para o guichê certo. Na <strong style="color:var(--txt)">Sala de Crise</strong>, analisa desastres reais quanto à causa e ao impacto.</span>
+      </div>
+    </div>
+
+    <div style="text-align:center;margin-top:1.5rem"><button class="btn btn-p" style="font-size:16px;padding:13px 32px" onclick="show('quiz')">Ir para o Quiz →</button></div>
+  </div>
+
+  <div id="quiz" class="section">
+    <h2>Teste seus conhecimentos</h2>
+    <div class="q-progress" id="qprog"></div>
+    <div id="qcontent"></div>
+    <div class="score-box" id="scorebox">
+      <div class="score-n" id="scoren"></div><div class="score-s" id="scores"></div>
+      <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;margin-top:1.75rem">
+        <button class="btn" onclick="restartQ()">Tentar novamente</button>
+        <button class="btn btn-p" onclick="show('pratica')">Ir para a Prática →</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="pratica" class="section">
+    <h2>🛂 Central das Fronteiras</h2>
+    <div class="cf-wrap" id="cfWrapOuter"></div>
+  </div>
+</div>
+
+<footer><p>Prof. Me. Christopher De Andrade Cardoso &nbsp;|&nbsp; <a href="https://inspira.prof/" target="_blank" rel="noopener">inspira.prof</a></p></footer>
+
+<div class="balloon-overlay" id="balloonOverlay">
+  <div class="balloon-box">
+    <div class="balloon-emoji" id="balloonEmoji">🎉</div>
+    <div class="balloon-title" id="balloonTitle"></div>
+    <div class="balloon-msg" id="balloonMsg"></div>
+    <button class="btn btn-p balloon-btn" id="balloonBtn" onclick="continueBalloon()">Continuar →</button>
+  </div>
+</div>
+
+<script>
+// ══════════ GUARDA ANTI-CLIQUE-RÁPIDO — FARME AURA v11 ══════════
+const FARME_GUARDA={travado:false,ultimoEm:0,MIN_MS:400,DESTRAVA_MS:900};
+function farmePodeResponder(){
+  const a=Date.now();
+  if(FARME_GUARDA.travado) return false;
+  if(a-FARME_GUARDA.ultimoEm<FARME_GUARDA.MIN_MS) return false;
+  FARME_GUARDA.travado=true; FARME_GUARDA.ultimoEm=a; return true;
+}
+function farmeLiberar(){ setTimeout(()=>{FARME_GUARDA.travado=false;},FARME_GUARDA.DESTRAVA_MS); }
+function farmeDesabilitarBotoes(s){
+  document.querySelectorAll(s||'.alternativa, .opcao, .btn-resposta').forEach(b=>{b.disabled=true;b.style.pointerEvents='none';b.style.opacity='.65';});
+}
+function show(id){
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  const m={tutorial:'Tutorial',quiz:'Quiz',pratica:'Prática'};
+  document.querySelectorAll('.nav-btn').forEach(b=>{if(b.textContent.includes(m[id]))b.classList.add('active');});
+}
+let sfxMuted=false,_actx=null;
+function _getActx(){ if(!_actx){const AC=window.AudioContext||window.webkitAudioContext;if(!AC)return null;_actx=new AC();} if(_actx.state==='suspended')_actx.resume(); return _actx; }
+function beep(f,d,t,v,dl){
+  if(sfxMuted)return; const c=_getActx(); if(!c)return;
+  t=t||'square';v=v||0.12;dl=dl||0;
+  const t0=c.currentTime+dl,o=c.createOscillator(),g=c.createGain();
+  o.type=t;o.frequency.setValueAtTime(f,t0);g.gain.setValueAtTime(0,t0);
+  g.gain.linearRampToValueAtTime(v,t0+0.01);g.gain.exponentialRampToValueAtTime(0.001,t0+d);
+  o.connect(g).connect(c.destination);o.start(t0);o.stop(t0+d+0.03);
+}
+function sfxClick(){beep(500,0.05,'square',0.08);}
+function sfxCorrect(){beep(880,0.09,'square',0.12);beep(1320,0.12,'square',0.10,0.08);}
+function sfxWrong(){beep(180,0.18,'sawtooth',0.13);}
+function sfxWin(){beep(523,0.1,'square',0.12);beep(659,0.1,'square',0.12,0.1);beep(784,0.1,'square',0.12,0.2);beep(1046,0.25,'square',0.14,0.3);}
+function sfxCarimbo(){beep(220,0.06,'square',0.12);beep(140,0.09,'square',0.10,0.05);}
+let _up=0;
+function sfxPasso(){const a=Date.now();if(a-_up<110)return;_up=a;beep(320,0.02,'square',0.045);}
+function toggleSfx(){sfxMuted=!sfxMuted;const b=document.getElementById('sfx-btn');if(b)b.textContent=sfxMuted?'🔇':'🔊';if(!sfxMuted)beep(700,0.06,'square',0.1);}
+function shuffleArray(a){const r=a.slice();for(let i=r.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[r[i],r[j]]=[r[j],r[i]];}return r;}
+const REDUZ = typeof window.matchMedia==='function' && window.matchMedia('(prefers-reduced-motion:reduce)').matches;
+
+/* ═══════════════════════ QUIZ ═══════════════════════ */
+const QRAW=[
+  {q:'O que caracteriza uma área de repulsão migratória?',
+   opts:['Perde população por crise ou violência','Recebe mais gente do que perde','Não tem nenhuma fronteira terrestre','Tem a maior renda do continente'],
+   ci:0,
+   fb:'Área de repulsão empurra gente para fora, por crise econômica, instabilidade política ou violência. É o oposto da área de atração, que puxa gente para dentro por oferecer estabilidade.'},
+  {q:'A Venezuela já foi área de atração e hoje é de repulsão. O que isso mostra?',
+   opts:['A classificação muda conforme a situação do país','Que a classificação foi feita errada','Que a Venezuela mudou de continente','Que atração e repulsão são a mesma coisa'],
+   ci:0,
+   fb:'No auge do petróleo, a Venezuela recebia migrantes de toda a América do Sul. A crise econômica inverteu o sinal. Nenhum país é permanentemente atração ou repulsão — depende das condições de cada momento.'},
+  {q:'Qual é a principal causa do êxodo venezuelano das últimas décadas?',
+   opts:['Uma grave crise econômica e política','Um ciclone tropical de grande porte','A elevação do nível do mar','Um acordo comercial com o Brasil'],
+   ci:0,
+   fb:'O colapso econômico e a instabilidade política levaram milhões a sair. É considerada migração forçada porque a saída foi imposta pelas condições, não escolhida — e o destino foram os vizinhos, numa rota Sul-Sul.'},
+  {q:'O que significa "deslocamento interno" causado por um desastre?',
+   opts:['A pessoa se muda sem cruzar fronteira internacional','A pessoa sempre cruza uma fronteira','A pessoa nunca mais retorna','Refere-se apenas a animais silvestres'],
+   ci:0,
+   fb:'Deslocado interno sai de casa mas permanece dentro do próprio país — como as famílias evacuadas no Rio Grande do Sul em 2024. Quem cruza fronteira internacional entra em outra categoria jurídica.'},
+  {q:'Segundo o GRID 2025 do IDMC, quantos deslocamentos por desastre houve em 2024?',
+   opts:['Cerca de 45,8 milhões','Cerca de 4,5 milhões','Cerca de 458 mil','Cerca de 458 milhões'],
+   ci:0,
+   fb:'Foram cerca de 45,8 milhões de deslocamentos internos por desastres — o maior número desde que o monitoramento começou, em 2008, e mais do que o dobro da média da década. As outras opções erram a ordem de grandeza.'},
+  {q:'Que fração dos deslocamentos por desastre em 2024 teve origem climática?',
+   opts:['Cerca de 99,5%','Cerca de 50%','Cerca de 25%','Cerca de 10%'],
+   ci:0,
+   fb:'Praticamente todos: cerca de 99,5%. Terremotos e outros desastres geológicos respondem por uma fatia mínima. Isso mostra o peso que eventos climáticos extremos já têm no deslocamento de pessoas.'},
+  {q:'Num município de 120.000 habitantes, 15% precisou sair de casa numa enchente. Quantos foram?',
+   opts:['18.000 pessoas','1.800 pessoas','12.000 pessoas','180.000 pessoas'],
+   ci:0,
+   fb:'15% de 120.000 = 0,15 × 120.000 = 18.000 pessoas. Um atalho: 10% seriam 12.000 e 5% seriam 6.000 — somando, 18.000.'},
+  {q:'Por que as enchentes no Sudão do Sul causaram deslocamento prolongado, e não temporário?',
+   opts:['As plantações foram perdidas, sem como voltar','A água nunca baixou completamente','As pessoas cruzaram fronteiras','O governo proibiu o retorno'],
+   ci:0,
+   fb:'Quando a cheia destrói a base de subsistência — as plantações —, não adianta a água baixar: não há para o que voltar. Por isso o deslocamento se estende, diferente de uma enchente urbana rápida.'},
+  {q:'Qual desses países americanos é classificado como área de atração?',
+   opts:['Canadá','Honduras','Haiti','El Salvador'],
+   ci:0,
+   fb:'O Canadá recebe mais migrantes do que perde, por estabilidade econômica e política. Honduras, Haiti e El Salvador são áreas de repulsão, marcadas por crise econômica e violência.'},
+  {q:'A fronteira México–Estados Unidos é conhecida principalmente por quê?',
+   opts:['Ser um dos maiores fluxos migratórios do mundo','Não registrar nenhum fluxo migratório','Estar fechada há mais de um século','Servir apenas ao comércio de grãos'],
+   ci:0,
+   fb:'É um dos pontos de passagem migratória mais movimentados do planeta, e o exemplo mais conhecido de rota Sul-Norte: sai de países em desenvolvimento em direção a um país desenvolvido.'},
+  {q:'Um evento climático desloca 2.000 pessoas de uma cidade de 40.000. Que porcentagem é isso?',
+   opts:['5%','2%','20%','0,5%'],
+   ci:0,
+   fb:'2.000 ÷ 40.000 = 0,05 → × 100 = 5%. Repare que é a mesma conta das taxas demográficas, só que multiplicando por 100 em vez de por mil.'},
+  {q:'Por que se discute internacionalmente a categoria de "refugiado climático"?',
+   opts:['Ela ainda não tem status legal reconhecido','Porque já foi extinta pela ONU','Porque só vale para desastres geológicos','Porque nenhum país aceita esses casos'],
+   ci:0,
+   fb:'A Convenção sobre Refugiados prevê perseguição por raça, religião, nacionalidade, opinião política ou grupo social — não desastre ambiental. Quem sai por causa do clima fica numa lacuna jurídica, e é isso que o debate tenta resolver.'}
+];
+function shuffleOne(q){const i=[0,1,2,3];for(let k=i.length-1;k>0;k--){const j=Math.floor(Math.random()*(k+1));[i[k],i[j]]=[i[j],i[k]];}return {...q,opts:i.map(x=>q.opts[x]),ci:i.indexOf(q.ci)};}
+function shuffleOpts(r){const o=shuffleArray(r),out=o.map(shuffleOne);for(let i=2;i<out.length;i++){let t=0;while(out[i].ci===out[i-1].ci&&out[i].ci===out[i-2].ci&&t<25){out[i]=shuffleOne(o[i]);t++;}}return out;}
+let QUIZ=shuffleOpts(QRAW);
+let QS={cur:0,ans:Array(QUIZ.length).fill(null)};
+let quizScore=0,uiLocked=false;
+const COOLDOWN_MS=280;
+function renderQ(){
+  document.getElementById('qprog').innerHTML=QUIZ.map((q,i)=>{let c='q-dot';if(QS.ans[i]!==null)c+=QS.ans[i]===q.ci?' ok':' err';else if(i===QS.cur)c+=' cur';return `<div class="${c}"></div>`;}).join('');
+  if(QS.cur>=QUIZ.length){
+    document.getElementById('qcontent').style.display='none';
+    const sc=QS.ans.filter((a,i)=>a===QUIZ[i].ci).length; quizScore=sc;
+    document.getElementById('scorebox').style.display='block';
+    document.getElementById('scoren').textContent=`${sc}/${QUIZ.length}`;
+    const p=Math.round(sc/QUIZ.length*100);
+    const m=['Continue praticando! Releia o tutorial e tente novamente.','Bom progresso! Você está quase dominando o conteúdo!','Muito bem! Você entendeu o conteúdo!','Perfeito! Desempenho de excelência!'];
+    document.getElementById('scores').textContent=p<50?m[0]:p<75?m[1]:p<100?m[2]:m[3];
+    enviarPontuacaoTotal(); return;
+  }
+  document.getElementById('scorebox').style.display='none';
+  document.getElementById('qcontent').style.display='block';
+  const q=QUIZ[QS.cur],pv=QS.ans[QS.cur],done=pv!==null;
+  document.getElementById('qcontent').innerHTML=`
+    <div class="card"><div class="q-text">Questão ${QS.cur+1}: ${q.q}</div>
+    <div class="q-opts">${q.opts.map((o,i)=>{let c='q-opt';if(done){c+=' dis';if(i===q.ci)c+=' ok';else if(i===pv)c+=' err';}return `<button class="${c}" onclick="ansQ(${i})">${String.fromCharCode(65+i)}) ${o}</button>`;}).join('')}</div></div>
+    <div class="q-nav"><button class="btn" onclick="prevQ()" ${(QS.cur===0||uiLocked)?'disabled':''}>← Anterior</button><span class="q-ctr">${QS.cur+1} de ${QUIZ.length}</span></div>`;
+}
+function ansQ(i){ if(uiLocked)return; if(QS.ans[QS.cur]!==null)return; uiLocked=true;QS.ans[QS.cur]=i;renderQ(); const ok=i===QUIZ[QS.cur].ci; ok?sfxCorrect():sfxWrong(); showBalloon(ok,QUIZ[QS.cur]); }
+function prevQ(){ if(uiLocked)return; if(QS.cur>0){QS.cur--;renderQ();} }
+function restartQ(){ QUIZ=shuffleOpts(QRAW);QS={cur:0,ans:Array(QUIZ.length).fill(null)};quizScore=0;uiLocked=false;document.getElementById('balloonOverlay').classList.remove('show','err');enviarPontuacaoTotal();renderQ(); }
+const CONGRATS=["Mandou bem! ✅","Isso aí! 🎯","Show de bola! 🌟","Acertou em cheio! 🔥","Excelente! 💪","Perfeito! 🏆","Muito bem! 👏","Na mosca! 🎯","Você está craque. 🧠","Certeiro! 🚀","Impecável! 💎","Top demais! 🔝"];
+function showBalloon(ok,q){
+  const ov=document.getElementById('balloonOverlay'),last=QS.cur===QUIZ.length-1;
+  ov.classList.toggle('err',!ok);
+  if(ok){document.getElementById('balloonEmoji').textContent=['🎉','✅','🌟','🔥','🏆'][Math.floor(Math.random()*5)];
+    document.getElementById('balloonTitle').textContent='Resposta correta!';
+    document.getElementById('balloonMsg').innerHTML='<b>'+CONGRATS[Math.floor(Math.random()*CONGRATS.length)]+'</b><br><br>'+q.fb;
+  }else{document.getElementById('balloonEmoji').textContent='💡';
+    document.getElementById('balloonTitle').textContent='Não foi dessa vez';
+    document.getElementById('balloonMsg').innerHTML='A correta era <b>'+String.fromCharCode(65+q.ci)+') '+q.opts[q.ci]+'</b>.<br><br>'+q.fb;}
+  document.getElementById('balloonBtn').textContent=last?'Ver resultado →':'Continuar →';
+  ov.classList.add('show');
+}
+function continueBalloon(){ const ov=document.getElementById('balloonOverlay'); if(!ov.classList.contains('show'))return; ov.classList.remove('show'); QS.cur++;renderQ(); setTimeout(()=>{uiLocked=false;renderQ();},COOLDOWN_MS); }
+
+/* ═══════════════════════════════════════════════════════════════════
+   PRÁTICA — duas fases com menu de escolha
+   Fase 1 · Terminal (arcade em canvas, pixel art)
+   Fase 2 · Sala de Crise (causa + impacto de desastres reais)
+   ═══════════════════════════════════════════════════════════════════ */
+const PTS_ACERTO=25;
+
+const PESSOAS=[
+  {pais:'Canadá', band:'🇨🇦', tipo:'atracao',
+   ficha:'Recebe mais migrantes do que perde, com programas próprios de acolhimento e forte estabilidade econômica.',
+   nota:'É um dos principais destinos migratórios do mundo, ao lado dos Estados Unidos.'},
+  {pais:'Estados Unidos', band:'🇺🇸', tipo:'atracao',
+   ficha:'Principal destino da rota Sul-Norte no continente. A fronteira com o México é uma das mais movimentadas do planeta.',
+   nota:'Concentra o maior número absoluto de imigrantes internacionais do mundo.'},
+  {pais:'Costa Rica', band:'🇨🇷', tipo:'atracao',
+   ficha:'Na América Central, é o país que mais recebe vizinhos em busca de estabilidade e trabalho.',
+   nota:'Prova de que atração e repulsão não dependem de tamanho: um país pequeno pode ser polo regional.'},
+  {pais:'Chile', band:'🇨🇱', tipo:'atracao',
+   ficha:'Tornou-se destino relevante na América do Sul, recebendo migrantes de vários países vizinhos.',
+   nota:'Faz parte do fluxo Sul-Sul: migrantes que ficam dentro do próprio continente.'},
+  {pais:'Haiti', band:'🇭🇹', tipo:'repulsao',
+   ficha:'Instabilidade política, violência e sucessivos desastres naturais levam parte da população a deixar o país.',
+   nota:'Muitos haitianos migraram para o Brasil e o Chile após o terremoto de 2010.'},
+  {pais:'Venezuela', band:'🇻🇪', tipo:'repulsao',
+   ficha:'O colapso econômico levou milhões a sair nas últimas décadas, rumo a Colômbia, Peru e Brasil.',
+   nota:'Atenção: já foi área de ATRAÇÃO no auge do petróleo. A situação do país é que mudou, não a regra.'},
+  {pais:'Honduras', band:'🇭🇳', tipo:'repulsao',
+   ficha:'Violência urbana e falta de oportunidades empurram população para o norte do continente.',
+   nota:'Faz parte do chamado Triângulo Norte da América Central, junto com Guatemala e El Salvador.'},
+  {pais:'Guatemala', band:'🇬🇹', tipo:'repulsao',
+   ficha:'Pobreza rural, violência e perdas agrícolas ligadas ao clima motivam a saída de milhares por ano.',
+   nota:'Aqui os motivos econômicos e climáticos se somam — nem sempre dá para separar as causas.'},
+  {pais:'Brasil', band:'🇧🇷', tipo:'atracao',
+   ficha:'Recebe migrantes de países vizinhos e do Caribe, sobretudo venezuelanos e haitianos.',
+   nota:'O Censo 2022 registrou aumento da imigração internacional no país.'},
+  {pais:'El Salvador', band:'🇸🇻', tipo:'repulsao',
+   ficha:'Um dos países com maior proporção de cidadãos vivendo fora do território nacional.',
+   nota:'As remessas enviadas por quem está fora representam fatia expressiva da economia salvadorenha.'}
+];
+
+const CAUSAS=[
+  {id:'ciclone', nome:'Ciclone tropical'},
+  {id:'enchente', nome:'Enchente prolongada'},
+  {id:'chuva', nome:'Chuva extrema pontual'},
+  {id:'tempestade', nome:'Tempestade tropical'}
+];
+const IMPACTOS=[
+  {id:'moradias', nome:'Destruição de moradias em massa'},
+  {id:'plantacoes', nome:'Deslocamento longo, perda de plantações'},
+  {id:'evacuacao', nome:'Cidades inteiras evacuadas'},
+  {id:'alagamento', nome:'Deslocamento temporário por alagamento'}
+];
+const DESASTRES=[
+  {nome:'Ciclone Freddy', local:'Moçambique, 2023', emoji:'🌀', causa:'ciclone', impacto:'moradias',
+   txt:'Um dos ciclones tropicais mais longos já registrados atingiu áreas densamente povoadas com ventos e chuvas intensas.',
+   nota:'A destruição de moradias em massa é a marca dos ciclones: a casa deixa de existir, não só alaga.'},
+  {nome:'Enchentes no Sudão do Sul', local:'Sudão do Sul', emoji:'🌊', causa:'enchente', impacto:'plantacoes',
+   txt:'Cheias de rios se estenderam por meses, inundando grandes áreas agrícolas e comunidades ribeirinhas.',
+   nota:'Quando a cheia é longa e destrói a plantação, o deslocamento se prolonga: não há para o que voltar.'},
+  {nome:'Chuvas no Rio Grande do Sul', local:'Brasil, 2024', emoji:'🌧️', causa:'chuva', impacto:'evacuacao',
+   txt:'Um volume de chuva muito acima do esperado, concentrado em poucos dias, causou cheias históricas em várias bacias.',
+   nota:'Foi o maior desastre climático da história recente do estado, com cidades inteiras evacuadas.'},
+  {nome:'Tempestade tropical Sara', local:'Honduras', emoji:'⛈️', causa:'tempestade', impacto:'alagamento',
+   txt:'Chuvas intensas e ventos fortes atingiram comunidades próximas a rios e áreas baixas.',
+   nota:'Tempestade tropical é menos intensa que um ciclone: alaga e desloca, mas em geral por período mais curto.'}
+];
+
+let cf=null, practiceScore=0;
+
+function resetFronteiras(){
+  cf={ fase:0, f1feita:false, f2feita:false, ptsF1:0, ptsF2:0,
+    ordemP:shuffleArray(PESSOAS.map((_,i)=>i)), curP:0, acertosP:0, errosP:0, guicheSel:null,
+    ordemD:shuffleArray(DESASTRES.map((_,i)=>i)), curD:0, acertosD:0, errosD:0, causaSel:null, impSel:null,
+    revelar:null, fb:null, finalizado:false,
+    anim:{x:14, alvo:null, andando:false} };
+  practiceScore=0;
+  document.getElementById('cfWrapOuter').innerHTML=`
+    <div class="cf-instructions" id="cfInstr"></div>
+    <div id="cfHud" class="cf-hud"></div>
+    <div id="cfMesa"></div>`;
+  renderPratica();
+}
+function pessoaAtual(){ return PESSOAS[cf.ordemP[cf.curP]]; }
+function desastreAtual(){ return DESASTRES[cf.ordemD[cf.curD]]; }
+
+function renderPratica(){
+  const ins=document.getElementById('cfInstr');
+  if(cf.fase===0){ ins.innerHTML='👉 Escolha por onde começar. A ordem é sua — ao terminar uma fase, você volta aqui para a outra.'; renderMenuFases(); }
+  else if(cf.fase===1){ ins.innerHTML='👉 Leia a ficha de quem chegou ao posto e toque no guichê certo. A pessoa caminha até lá.'; renderTerminal(); }
+  else { ins.innerHTML='👉 Analise o desastre e escolha a causa climática e o impacto principal. Depois registre.'; renderCrise(); }
+}
+function renderMenuFases(){
+  document.getElementById('cfHud').innerHTML='';
+  document.getElementById('cfMesa').innerHTML=`
+    <div class="fs-menu">
+      <button class="fs-card" onclick="iniciarFase(1)" ${cf.f1feita?'disabled':''}>
+        ${cf.f1feita?'<span class="fs-selo">✓ concluída</span>':''}
+        <span class="fs-card-e">🛂</span>
+        <div class="fs-card-n">Fase 1 · Terminal</div>
+        <div class="fs-card-d">Você é o agente do posto de fronteira. Cada pessoa chega com uma ficha do seu país: encaminhe para o guichê de atração ou de repulsão.</div>
+        <div class="fs-card-f">${cf.f1feita?`✓ ${cf.acertosP}/${PESSOAS.length} fichas · ${cf.ptsF1} pts`:`${PESSOAS.length} pessoas na fila ›`}</div>
+      </button>
+      <button class="fs-card" onclick="iniciarFase(2)" ${cf.f2feita?'disabled':''}>
+        ${cf.f2feita?'<span class="fs-selo">✓ concluída</span>':''}
+        <span class="fs-card-e">🌪️</span>
+        <div class="fs-card-n">Fase 2 · Sala de Crise</div>
+        <div class="fs-card-d">Quatro desastres climáticos reais. Para cada um, identifique a causa e o impacto principal sobre a população.</div>
+        <div class="fs-card-f">${cf.f2feita?`✓ ${cf.acertosD}/${DESASTRES.length} casos · ${cf.ptsF2} pts`:`${DESASTRES.length} casos para analisar ›`}</div>
+      </button>
+    </div>`;
+}
+function iniciarFase(n){
+  if(!cf||cf.finalizado) return;
+  if(n===1&&cf.f1feita) return;
+  if(n===2&&cf.f2feita) return;
+  sfxClick(); cf.fase=n; cf.revelar=null; cf.fb=null;
+  if(n===1){ cf.curP=0; cf.guicheSel=null; cf.anim={x:14,alvo:null,andando:false}; }
+  else { cf.curD=0; cf.causaSel=null; cf.impSel=null; }
+  renderPratica();
+}
+function concluirFase(n){
+  if(n===1){ cf.f1feita=true; cf.ptsF1=cf.acertosP*PTS_ACERTO; }
+  else { cf.f2feita=true; cf.ptsF2=cf.acertosD*PTS_ACERTO; }
+  if(cf.f1feita&&cf.f2feita){ finalizarPratica(); }
+  else { sfxWin(); cf.fase=0; renderPratica(); }
+}
+
+/* ═══ FASE 1 · TERMINAL — canvas pixel art 160×90 ═══ */
+const CW=160, CH=90;
+const GX_ATR=30, GX_REP=126;   // x dos dois guichês
+function desenharTerminal(){
+  const cv=document.getElementById('cfCanvas');
+  if(!cv||!cv.getContext) return;
+  const g=cv.getContext('2d');
+  if(!g) return;
+  g.clearRect(0,0,CW,CH);
+  // céu e chão
+  g.fillStyle='#101828'; g.fillRect(0,0,CW,CH);
+  g.fillStyle='#1a2438'; g.fillRect(0,58,CW,CH-58);
+  g.fillStyle='#233047'; g.fillRect(0,58,CW,2);
+  // estrelas
+  g.fillStyle='#2b3a52';
+  for(let i=0;i<18;i++){ g.fillRect((i*23)%CW, (i*13)%40, 1, 1); }
+  // guichê da esquerda (atração)
+  function guiche(x,cor,rot){
+    g.fillStyle='#0d1420'; g.fillRect(x-18,26,36,32);
+    g.fillStyle=cor; g.fillRect(x-18,26,36,4);
+    g.fillStyle='#0a0f18'; g.fillRect(x-12,36,24,14);
+    g.fillStyle=cor; g.fillRect(x-2,50,4,8);
+    g.fillStyle='#e6f2ff'; g.font='6px monospace'; g.textAlign='center';
+    g.fillText(rot,x,33);
+  }
+  guiche(GX_ATR,'#22c55e','ATRACAO');
+  guiche(GX_REP,'#ef4444','REPULSAO');
+  // ônibus no centro
+  g.fillStyle='#2a3648'; g.fillRect(64,40,32,16);
+  g.fillStyle='#8fd0ff'; g.fillRect(67,43,8,6); g.fillRect(77,43,8,6);
+  g.fillStyle='#0b0f16'; g.fillRect(68,56,5,3); g.fillRect(87,56,5,3);
+  // personagem (sprite simples)
+  const px=Math.round(cf.anim.x), py=62;
+  g.fillStyle='#f2c9a0'; g.fillRect(px-2,py-8,5,5);        // cabeça
+  g.fillStyle='#4a90d9'; g.fillRect(px-3,py-3,7,7);        // corpo
+  g.fillStyle='#2a3648'; g.fillRect(px-3,py+4,3,4); g.fillRect(px+1,py+4,3,4); // pernas
+  // mala
+  g.fillStyle='#a06b3c'; g.fillRect(px+4,py-1,4,4);
+}
+function animarAte(alvoX, aoChegar){
+  cf.anim.alvo=alvoX; cf.anim.andando=true;
+  if(REDUZ || typeof requestAnimationFrame!=='function'){
+    cf.anim.x=alvoX; cf.anim.andando=false; desenharTerminal(); if(aoChegar) aoChegar(); return;
+  }
+  (function passo(){
+    const d=cf.anim.alvo-cf.anim.x;
+    if(Math.abs(d)<1.2){ cf.anim.x=cf.anim.alvo; cf.anim.andando=false; desenharTerminal(); if(aoChegar) aoChegar(); return; }
+    cf.anim.x+=Math.sign(d)*1.6; sfxPasso(); desenharTerminal();
+    requestAnimationFrame(passo);
+  })();
+}
+
+function renderTerminal(){
+  const p=pessoaAtual(), rev=cf.revelar;
+  document.getElementById('cfHud').innerHTML=`
+    <div class="cf-chip">Ficha ${cf.curP+1}/${PESSOAS.length}</div>
+    <div class="cf-chip">✔ ${cf.acertosP} certas</div>
+    <div class="cf-chip">✕ ${cf.errosP} erradas</div>`;
+  document.getElementById('cfMesa').innerHTML=`
+    <div class="cf-console">
+      <div class="cf-tela"><canvas id="cfCanvas" width="${CW}" height="${CH}" aria-label="Posto de fronteira em pixel art"></canvas></div>
+      <div class="cf-bezel"><span><span class="cf-led"></span>Terminal Fronteira</span><span>Ficha ${String(cf.curP+1).padStart(2,'0')}/${PESSOAS.length}</span></div>
+      <div class="cf-ficha">
+        <div class="cf-ficha-h"><span>▸ ficha de origem</span><span>${p.band} ${p.pais}</span></div>
+        <div class="cf-ficha-t">${p.ficha}</div>
+        <div class="cf-ask"><span class="cf-ask-l">▸ o que fazer</span>
+          <span class="cf-ask-q">Esse país é área de atração ou de repulsão migratória?</span></div>
+      </div>
+      <div class="cf-guiches">
+        ${[['atracao','🧲 Guichê ATRAÇÃO','recebe mais gente do que perde'],['repulsao','📤 Guichê REPULSÃO','perde população para fora']].map(([id,nome,dica])=>{
+          let c='cf-gb';
+          if(rev){ if(id===p.tipo) c+=' ok'; else if(id===cf.guicheSel) c+=' err'; }
+          return `<button class="${c}" onclick="encaminhar('${id}')" ${rev?'disabled':''}>${nome}<small>${dica}</small></button>`;
+        }).join('')}
+      </div>
+      ${cf.fb?`<div class="cf-fb ${cf.fb.cls}">${cf.fb.txt}</div>
+        <button class="cf-continuar" onclick="avancarFicha()">${cf.curP>=PESSOAS.length-1?'Fechar e voltar ao menu →':'Entendi, próxima pessoa →'}</button>`:''}
+    </div>`;
+  desenharTerminal();
+}
+
+function encaminhar(id){
+  if(!cf||cf.finalizado||cf.fase!==1||cf.revelar) return;
+  if(!farmePodeResponder()) return;
+  const p=pessoaAtual();
+  const acertou=(id===p.tipo);
+  cf.guicheSel=id;
+  if(acertou){ cf.acertosP++; practiceScore+=PTS_ACERTO; sfxCorrect(); }
+  else { cf.errosP++; sfxWrong(); }
+  const nomeCerto = p.tipo==='atracao'?'ATRAÇÃO':'REPULSÃO';
+  const explica=`<div style="margin-top:7px;padding-top:7px;border-top:1px dashed rgba(255,255,255,.18)">🛂 <b>Guichê correto:</b> ${nomeCerto} — ${p.tipo==='atracao'?'recebe mais gente do que perde':'perde população para outros países'}.</div>
+    <div style="margin-top:6px">🌍 ${p.nota}</div>`;
+  cf.fb={cls:acertou?'ok':'err',
+    txt:(acertou?`✔ <b>ENCAMINHAMENTO CORRETO.</b> ${p.band} ${p.pais} é área de ${nomeCerto.toLowerCase()}.`
+                :`✕ <b>GUICHÊ ERRADO.</b> ${p.band} ${p.pais} é área de <b>${nomeCerto.toLowerCase()}</b>.`)+explica
+      +` <span style="opacity:.75">(+${acertou?PTS_ACERTO:0} pts)</span>`};
+  cf.revelar=true;
+  sfxCarimbo();
+  renderTerminal();
+  /* a pessoa caminha até o guichê CERTO, para o aluno ver onde era */
+  animarAte(p.tipo==='atracao'?GX_ATR:GX_REP);
+}
+function avancarFicha(){
+  if(!cf||cf.finalizado||cf.fase!==1||!cf.revelar) return;
+  sfxClick();
+  const ultima=cf.curP>=PESSOAS.length-1;
+  cf.revelar=null; cf.fb=null; cf.guicheSel=null;
+  cf.anim={x:14,alvo:null,andando:false};
+  if(ultima){ concluirFase(1); } else { cf.curP++; renderTerminal(); }
+  farmeLiberar();
+}
+
+/* ═══ FASE 2 · SALA DE CRISE ═══ */
+function renderCrise(){
+  const d=desastreAtual(), rev=cf.revelar;
+  const pronto=cf.causaSel&&cf.impSel;
+  document.getElementById('cfHud').innerHTML=`
+    <div class="cf-chip">Caso ${cf.curD+1}/${DESASTRES.length}</div>
+    <div class="cf-chip">✔ ${cf.acertosD} certos</div>
+    <div class="cf-chip">✕ ${cf.errosD} errados</div>`;
+  const grupo=(lista,sel,certo,fn,titulo)=>`
+    <div class="cf-eixo">
+      <div class="cf-eixo-l">${titulo}</div>
+      <div class="cf-eixo-g">
+        ${lista.map(o=>{
+          let c='cf-eb';
+          if(rev){ if(o.id===certo) c+=' ok'; else if(o.id===sel) c+=' err'; }
+          else if(o.id===sel) c+=' sel';
+          return `<button class="${c}" onclick="${fn}('${o.id}')" ${rev?'disabled':''}>${o.nome}</button>`;
+        }).join('')}
+      </div>
+    </div>`;
+  document.getElementById('cfMesa').innerHTML=`
+    <div class="cf-console">
+      <div class="cf-bezel" style="margin-top:0;margin-bottom:8px"><span><span class="cf-led"></span>Sala de Crise</span><span>Caso ${String(cf.curD+1).padStart(2,'0')}/${DESASTRES.length}</span></div>
+      <div class="cf-ficha" style="margin-top:0">
+        <div class="cf-ficha-h"><span>▸ ocorrência registrada</span><span>${d.emoji} ${d.local}</span></div>
+        <div class="cf-ficha-t"><b>${d.nome}.</b> ${d.txt}</div>
+        <div class="cf-ask"><span class="cf-ask-l">▸ o que fazer</span>
+          <span class="cf-ask-q">Identifique a causa climática e o impacto principal sobre a população.</span></div>
+      </div>
+      ${grupo(CAUSAS,cf.causaSel,d.causa,'escolherCausa','1 · causa climática')}
+      ${grupo(IMPACTOS,cf.impSel,d.impacto,'escolherImpacto','2 · impacto principal')}
+      <button class="cf-lever ${(pronto&&!rev)?'armed':''}" onclick="registrarCaso()" ${(!pronto||rev)?'disabled':''}>
+        ${rev?'⏳ registrando…':(pronto?'✅ REGISTRAR ANÁLISE':'🔒 escolha causa e impacto')}
+      </button>
+      ${cf.fb?`<div class="cf-fb ${cf.fb.cls}">${cf.fb.txt}</div>
+        <button class="cf-continuar" onclick="avancarCaso()">${cf.curD>=DESASTRES.length-1?'Fechar e voltar ao menu →':'Entendi, próximo caso →'}</button>`:''}
+    </div>`;
+}
+function escolherCausa(id){ if(!cf||cf.finalizado||cf.fase!==2||cf.revelar)return; cf.causaSel=id; sfxClick(); renderCrise(); }
+function escolherImpacto(id){ if(!cf||cf.finalizado||cf.fase!==2||cf.revelar)return; cf.impSel=id; sfxClick(); renderCrise(); }
+
+function registrarCaso(){
+  if(!cf||cf.finalizado||cf.fase!==2||cf.revelar) return;
+  if(!cf.causaSel||!cf.impSel) return;
+  if(!farmePodeResponder()) return;
+  const d=desastreAtual();
+  const okC=cf.causaSel===d.causa, okI=cf.impSel===d.impacto, acertou=okC&&okI;
+  const nomeC=CAUSAS.find(c=>c.id===d.causa).nome, nomeI=IMPACTOS.find(i=>i.id===d.impacto).nome;
+  if(acertou){ cf.acertosD++; practiceScore+=PTS_ACERTO; sfxCorrect(); }
+  else { cf.errosD++; sfxWrong(); }
+  const explica=`<div style="margin-top:7px;padding-top:7px;border-top:1px dashed rgba(255,255,255,.18)">🌪️ <b>Análise correta:</b> causa ${nomeC.toLowerCase()}, impacto ${nomeI.toLowerCase()}.</div>
+    <div style="margin-top:6px">🌍 ${d.nota}</div>`;
+  const erra=[!okC?'a causa':'',!okI?'o impacto':''].filter(Boolean).join(' e ');
+  cf.fb={cls:acertou?'ok':'err',
+    txt:(acertou?`✔ <b>ANÁLISE CORRETA.</b> ${d.nome}.`:`✕ <b>REVISAR ANÁLISE.</b> Você errou ${erra}.`)+explica
+      +` <span style="opacity:.75">(+${acertou?PTS_ACERTO:0} pts)</span>`};
+  cf.revelar=true;
+  renderCrise();
+}
+function avancarCaso(){
+  if(!cf||cf.finalizado||cf.fase!==2||!cf.revelar) return;
+  sfxClick();
+  const ultima=cf.curD>=DESASTRES.length-1;
+  cf.revelar=null; cf.fb=null; cf.causaSel=null; cf.impSel=null;
+  if(ultima){ concluirFase(2); } else { cf.curD++; renderCrise(); }
+  farmeLiberar();
+}
+
+function finalizarPratica(){
+  cf.finalizado=true; sfxWin(); enviarPontuacaoTotal();
+  const max=(PESSOAS.length+DESASTRES.length)*PTS_ACERTO;
+  const tot=cf.acertosP+cf.acertosD, itens=PESSOAS.length+DESASTRES.length;
+  const el = tot===itens ? 'Turno impecável no posto e na sala de crise. Você fecha o bimestre dominando migrações. 🌟'
+    : (tot>=itens-2 ? 'Excelente plantão! Quase tudo encaminhado corretamente.'
+      : (tot>=itens/2 ? 'Bom trabalho. Reveja quais países da América são atração e quais são repulsão.'
+        : 'Plantão encerrado. Volte ao tutorial e revise a lógica de atração e repulsão.'));
+  document.getElementById('cfWrapOuter').innerHTML=`
+    <div class="cf-report">
+      <h3>🛂 Plantão encerrado!</h3>
+      <p>${el}</p>
+      <div style="display:flex;flex-direction:column;gap:6px;max-width:380px;margin:1.1rem auto">
+        <div class="score-line"><div>🛂 Fichas encaminhadas</div><div class="sv">${cf.acertosP}/${PESSOAS.length}</div></div>
+        <div class="score-line"><div>🌪️ Casos analisados</div><div class="sv">${cf.acertosD}/${DESASTRES.length}</div></div>
+        <div class="score-line"><div>✕ Erros no total</div><div class="sv">${cf.errosP+cf.errosD}</div></div>
+        <div class="score-line total"><div><strong>Total da Prática</strong></div><div class="sv">${practiceScore} / ${max} pts</div></div>
+      </div>
+      <p style="margin-top:1rem;font-size:14px">🎉 Parabéns por concluir todas as atividades do 3º bimestre de Geografia do 8º ano! 🎉</p>
+      <button class="btn btn-p" onclick="restartPractice()">🔁 Novo plantão</button>
+    </div>`;
+}
+function restartPractice(){ sfxClick(); resetFronteiras(); }
+
+function enviarPontuacaoTotal(){
+  const total=(quizScore*100)+practiceScore;
+  if(window.enviarScoreFarme){ window.enviarScoreFarme(total,{corrects:quizScore,totals:QRAW.length}); }
+}
+renderQ();
+resetFronteiras();
+</script>
+
+<script>
+/* ===== KIT FARME AURA — Integração com iframe ===== */
+(function(){
+  const dentroDoFarme = window.parent && window.parent !== window;
+  window.enviarScoreFarme = function(pontos, extra){
+    extra = extra || {};
+    const payload = { tipo:'FARME_ATIVIDADE_SCORE', pontos:Math.max(0,Math.round(pontos||0)),
+      corrects:extra.corrects||null, totals:extra.totals||null,
+      atividade:document.title||'Atividade', timestamp:Date.now() };
+    if(dentroDoFarme){ window.parent.postMessage(payload,'*'); }
+  };
+  if(dentroDoFarme){ window.parent.postMessage({tipo:'FARME_ATIVIDADE_PRONTA',atividade:document.title},'*'); }
+})();
+/* ===== FIM DO KIT FARME ===== */
+</script>
+</body>
+</html>
