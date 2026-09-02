@@ -109,6 +109,11 @@ footer a{color:var(--info-txt);text-decoration:none;font-weight:600}
 .cf-gb:focus-visible{outline:3px solid #4a90d9;outline-offset:2px}
 .cf-gb.ok{background:#123322;border-color:#22c55e;color:#b6f0c9}
 .cf-gb.err{background:#3a1417;border-color:#ef4444;color:#f8b4b4}
+.cf-eixo-legenda{display:flex;justify-content:space-between;gap:8px;margin:8px 0 2px;flex-wrap:wrap}
+.cf-leg{flex:1;min-width:130px;font-size:12px;line-height:1.5;padding:7px 10px;border-radius:8px;font-family:'Segoe UI',Inter,Arial,sans-serif}
+.cf-leg.atr{background:#123322;color:#b6f0c9;border:1px solid #22c55e}
+.cf-leg.rep{background:#3a1417;color:#f8b4b4;border:1px solid #ef4444;text-align:right}
+.cf-leg b{color:#fff}
 .cf-eixo{margin-bottom:9px}
 .cf-eixo-l{font-family:ui-monospace,monospace;font-size:10px;color:#5d67a0;text-transform:uppercase;letter-spacing:.1em;margin-bottom:5px}
 .cf-eixo-g{display:grid;grid-template-columns:1fr 1fr;gap:8px}
@@ -137,6 +142,42 @@ footer a{color:var(--info-txt);text-decoration:none;font-weight:600}
 .score-line.total{color:var(--ok-txt);background:var(--ok-bg);font-size:14px}
 .score-line .sv{margin-left:auto;font-weight:800}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation-duration:.01ms !important;animation-iteration-count:1 !important;transition-duration:.01ms !important}}
+
+    /* ══════ CABEÇALHO PEDAGÓGICO DA AULA (padrão para todas as atividades) ══════ */
+    .aula-cab{background:linear-gradient(135deg,#1f4a34,#2f6b4a);border-radius:var(--r2);padding:16px 18px;margin-bottom:1.1rem;color:#eef7f1;box-shadow:inset 0 0 0 1px rgba(255,255,255,.14)}
+    .aula-cab-n{display:inline-block;background:rgba(255,255,255,.20);border-radius:20px;padding:4px 13px;font-size:11px;font-weight:900;letter-spacing:.13em;margin-bottom:9px}
+    .aula-cab-t{display:block;font-size:20px;font-weight:900;line-height:1.3;margin-bottom:4px}
+    .aula-cab-s{display:block;font-size:13px;color:#bfe0cd;font-weight:600;line-height:1.5}
+    .aula-obj{background:rgba(255,255,255,.13);border-left:4px solid #8fd6ad;border-radius:9px;padding:12px 14px;margin-top:12px}
+    .aula-obj-t{display:block;font-size:11px;font-weight:900;letter-spacing:.11em;color:#a9e2c2;margin-bottom:6px}
+    .aula-obj p{margin:0 0 7px;font-size:13.8px;line-height:1.65;color:#eef7f1}
+    .aula-obj p:last-child{margin-bottom:0}
+    .aula-obj b{color:#fff}
+    .aula-ficha{display:grid;grid-template-columns:1fr;gap:7px;margin-top:12px}
+    @media(min-width:640px){.aula-ficha{grid-template-columns:1fr 1fr}}
+    .aula-ficha-l{background:rgba(0,0,0,.16);border-radius:8px;padding:9px 11px}
+    .aula-ficha-l i{display:block;font-style:normal;font-size:10px;font-weight:900;letter-spacing:.1em;color:#9fd8ba;margin-bottom:3px}
+    .aula-ficha-l span{display:block;font-size:12.3px;line-height:1.5;color:#e6f4ec}
+    .aula-ficha-l.larga{grid-column:1/-1}
+    @media(prefers-reduced-motion:reduce){.aula-cab{transition:none}}
+
+    /* ══════ BARRA DE ÁUDIO (AUDIOLIVRO) ══════ */
+    .farme-audio{display:flex;align-items:center;gap:10px;flex-wrap:wrap;background:var(--card2);border:0.5px solid var(--border);border-radius:var(--r2);padding:.75rem 1rem;margin-bottom:1.1rem}
+    .farme-audio-play{padding:11px 18px;border:0;border-radius:24px;background:#eef7f1;color:#1f4a34;font-weight:700;font-size:14px;cursor:pointer;box-shadow:0 1px 0 rgba(0,0,0,.15) inset,0 2px 6px rgba(0,0,0,.12);transition:.15s;font-family:inherit}
+    .farme-audio-play:hover{transform:translateY(-1px)}
+    .farme-audio-play.pulsa{animation:farmePulsa 1.8s ease-in-out infinite}
+    @keyframes farmePulsa{0%,100%{box-shadow:0 1px 0 rgba(0,0,0,.15) inset,0 2px 6px rgba(0,0,0,.12),0 0 0 0 rgba(34,197,94,.45)}50%{box-shadow:0 1px 0 rgba(0,0,0,.15) inset,0 2px 6px rgba(0,0,0,.12),0 0 0 8px rgba(34,197,94,0)}}
+    .farme-audio-sec{padding:9px 14px;border:1px solid var(--border2);border-radius:20px;background:transparent;color:var(--txt2);font-size:13px;cursor:pointer;font-family:inherit;transition:.15s}
+    .farme-audio-sec:hover{background:var(--card)}
+    .farme-audio-onda{display:none;align-items:center;gap:3px;height:18px}
+    .farme-audio-onda span{width:3px;background:var(--info-txt);border-radius:2px;animation:farmeOnda 1s ease-in-out infinite}
+    .farme-audio-onda span:nth-child(2){animation-delay:.2s}
+    .farme-audio-onda span:nth-child(3){animation-delay:.4s}
+    @keyframes farmeOnda{0%,100%{height:5px}50%{height:18px}}
+    .farme-audio-status{font-size:12.5px;color:var(--txt3)}
+    .farme-audio-vozwrap{margin-left:auto;display:flex;align-items:center;gap:6px;font-size:12.5px;color:var(--txt2)}
+    .farme-audio-vozwrap select{font-size:12.5px;padding:5px 8px;border-radius:8px;border:1px solid var(--border2);background:var(--card);color:var(--txt);font-family:inherit;max-width:180px}
+    @media(prefers-reduced-motion:reduce){.farme-audio-play.pulsa{animation:none}.farme-audio-onda span{animation:none}}
 </style>
 </head>
 <body>
@@ -158,6 +199,37 @@ footer a{color:var(--info-txt);text-decoration:none;font-weight:600}
   </div>
 
   <div id="tutorial" class="section active">
+    <div class="aula-cab">
+      <span class="aula-cab-n">GEOGRAFIA · 8º ANO · 3º BIMESTRE · AULAS 11 E 12</span>
+      <span class="aula-cab-t">Migrações na América: consequências e desastres climáticos</span>
+      <span class="aula-cab-s">As consequências e os desafios das migrações no continente americano, e a relação entre desastres climáticos e migrações forçadas na África e na América.</span>
+      <div class="aula-obj">
+        <span class="aula-obj-t">🎯 O QUE VAMOS APRENDER NESTA AULA</span>
+        <p><b>Objetivo:</b> analisar as consequências e os desafios da migração no continente americano, e analisar exemplos de desastres na África e na América, destacando sua relação com as migrações forçadas.</p>
+        <p><b>Conceito abordado:</b> países podem ser <b>área de atração</b> (recebem mais gente do que perdem, por estabilidade econômica e política) ou <b>área de repulsão</b> (perdem população por crise econômica, instabilidade ou violência) — e essa classificação não é fixa, pode mudar com o tempo. Eventos climáticos extremos também forçam deslocamentos, inclusive dentro do próprio país (<b>deslocamento interno</b>), sem cruzar fronteira.</p>
+      </div>
+      <div class="aula-ficha">
+        <div class="aula-ficha-l larga"><i>HABILIDADE</i><span><b>EF08GE04B</b> (aula 11) <b>/ EF08GE04A, EF08GE19</b> (aula 12) — Analisar os fluxos migratórios ao longo do tempo, relacionando-os aos contextos históricos, políticos e socioambientais, comparando movimentos voluntários e forçados em diferentes regiões do mundo, em especial na América e na África.</span></div>
+        <div class="aula-ficha-l larga"><i>APRENDIZAGEM ESSENCIAL</i><span><b>AE7</b> — Analisar os fluxos migratórios ao longo do tempo, relacionando-os aos contextos históricos, políticos e socioambientais, comparando movimentos voluntários e forçados em diferentes regiões do mundo, em especial na América e na África.</span></div>
+        <div class="aula-ficha-l"><i>CONTEÚDO DAS AULAS 11 E 12</i><span>Aula 11 — Consequências e desafios da migração. Aula 12 — Migrações forçadas; mudanças climáticas; desastres.</span></div>
+        <div class="aula-ficha-l"><i>OBJETIVOS DA APRENDIZAGEM</i><span>Aula 11 — Analisar as consequências das migrações; avaliar os desafios da questão migratória no continente americano. Aula 12 — Analisar exemplos de desastres na África e na América, destacando sua relação com as migrações forçadas.</span></div>
+        <div class="aula-ficha-l"><i>COMPETÊNCIA SOCIOEMOCIONAL</i><span>Organização, foco e responsabilidade.</span></div>
+        <div class="aula-ficha-l"><i>PLANO DE AULA</i><span>3º Bimestre — PEI 2026 · Prof. Me. Christopher De Andrade Cardoso · EE Prefeito Edison Bastos Gasparini</span></div>
+      </div>
+    </div>
+
+    <div class="farme-audio" id="farmeAudio">
+      <button class="farme-audio-play pulsa" id="btnLer" onclick="FarmeKit.lerTutorial()">🔊 Clique aqui para ouvir o texto</button>
+      <button class="farme-audio-sec" id="btnPausar" style="display:none" onclick="FarmeKit.pausarTutorial()">⏸️ Pausar</button>
+      <button class="farme-audio-sec" id="btnParar" style="display:none" onclick="FarmeKit.pararTutorial()">⏹️ Parar</button>
+      <span class="farme-audio-onda" id="audioOnda"><span></span><span></span><span></span></span>
+      <span class="farme-audio-status" id="audioStatus"></span>
+      <div class="farme-audio-vozwrap">
+        <label for="vozSelect">🗣️ Voz:</label>
+        <select id="vozSelect"></select>
+      </div>
+    </div>
+
     <h2>Migrações na América e desastres climáticos</h2>
     <div class="card">
       <p>Alguns países <strong style="color:var(--txt)">puxam</strong> gente para dentro; outros <strong style="color:var(--txt)">empurram</strong> gente para fora. É a lógica de atração e repulsão que organiza os fluxos migratórios do continente americano.</p>
@@ -223,6 +295,113 @@ footer a{color:var(--info-txt);text-decoration:none;font-weight:600}
 </div>
 
 <script>
+/* ═══════════════════════════════════════════════════════════════════════
+   KIT FARME AURA v2 — audiolivro com seletor de voz (bloco padrão)
+   Aqui só usamos o módulo de áudio (lerTutorial/pausarTutorial/pararTutorial
+   + seletor de voz). A guarda anti-clique e o placar desta atividade
+   continuam no sistema próprio dela, já validados — não foram alterados.
+   ═══════════════════════════════════════════════════════════════════════ */
+const FarmeKit = (function(){
+  const dentroDoFarme = window.parent && window.parent !== window;
+  const st = { vozPreferida:null };
+
+  let lendo = false, pausado = false;
+  const CHAVE_VOZ_LOCAL = 'farmeVozEscolhida';
+  function vozLocalSalva(){ try{ return localStorage.getItem(CHAVE_VOZ_LOCAL); }catch(e){ return null; } }
+  function salvarVozLocal(nome){ try{ localStorage.setItem(CHAVE_VOZ_LOCAL, nome); }catch(e){} }
+
+  window.addEventListener('message', e => {
+    const d = e.data;
+    if(d && d.tipo === 'FARME_CONFIG' && d.voz && !vozLocalSalva()) st.vozPreferida = d.voz;
+  });
+
+  function textoTutorial(){
+    const sec = document.getElementById('tutorial');
+    if(!sec) return '';
+    const copia = sec.cloneNode(true);
+    copia.querySelectorAll('.aula-cab, .farme-audio, button, svg, script').forEach(el=>el.remove());
+    return (copia.innerText || '').replace(/\s+/g,' ').trim();
+  }
+
+  function escolherVoz(){
+    const vozes = window.speechSynthesis.getVoices();
+    if(st.vozPreferida){
+      const v = vozes.find(x => x.name === st.vozPreferida);
+      if(v) return v;
+    }
+    return vozes.find(v => /pt[-_]?br/i.test(v.lang)) || vozes.find(v => /^pt/i.test(v.lang)) || null;
+  }
+
+  function popularSeletorVoz(){
+    const sel = document.getElementById('vozSelect');
+    if(!sel || !window.speechSynthesis) return;
+    const vozes = window.speechSynthesis.getVoices();
+    if(!vozes.length) return;
+    const pt = vozes.filter(v => /^pt/i.test(v.lang));
+    const lista = (pt.length ? pt : vozes).slice().sort((a,b)=>a.name.localeCompare(b.name));
+    const salva = vozLocalSalva();
+    sel.innerHTML = lista.map(v =>
+      `<option value="${v.name.replace(/"/g,'&quot;')}">${v.name.replace(/^(Microsoft|Google)\s*/,'')} (${v.lang})</option>`
+    ).join('');
+    if(salva && lista.some(v => v.name===salva)){
+      sel.value = salva; st.vozPreferida = salva;
+    } else if(lista[0] && !st.vozPreferida){
+      st.vozPreferida = lista[0].name;
+    }
+    sel.onchange = () => {
+      st.vozPreferida = sel.value;
+      salvarVozLocal(sel.value);
+      if(lendo) lerTutorial();
+    };
+  }
+  if(window.speechSynthesis){
+    popularSeletorVoz();
+    window.speechSynthesis.onvoiceschanged = popularSeletorVoz;
+  }
+
+  function lerTutorial(){
+    if(!window.speechSynthesis){ statusAudio('Seu navegador não tem vozes disponíveis.'); return; }
+    if(pausado){ window.speechSynthesis.resume(); pausado=false; marcar(true); return; }
+    window.speechSynthesis.cancel();
+    const texto = textoTutorial();
+    if(!texto){ statusAudio('Nada para ler aqui.'); return; }
+    const frases = texto.match(/[^.!?]+[.!?]+|\s*[^.!?]+$/g) || [texto];
+    const voz = escolherVoz();
+    frases.forEach((f,i)=>{
+      const u = new SpeechSynthesisUtterance(f.trim());
+      u.lang='pt-BR'; u.rate=0.98;
+      if(voz) u.voice = voz;
+      if(i===frases.length-1) u.onend = ()=>{ lendo=false; pausado=false; marcar(false); };
+      window.speechSynthesis.speak(u);
+    });
+    lendo = true; marcar(true);
+  }
+  function pausarTutorial(){ if(!lendo) return; window.speechSynthesis.pause(); pausado=true; lendo=false; marcar(false,true); }
+  function pararTutorial(){ if(window.speechSynthesis) window.speechSynthesis.cancel(); lendo=false; pausado=false; marcar(false); }
+
+  function marcar(estaLendo, estaPausado){
+    const q = id => document.getElementById(id);
+    if(q('btnLer')){
+      q('btnLer').style.display = estaLendo?'none':'';
+      q('btnLer').classList.toggle('pulsa', !estaLendo);
+      q('btnLer').textContent = estaPausado ? '▶️ Continuar ouvindo' : '🔊 Clique aqui para ouvir o texto';
+    }
+    if(q('btnPausar')) q('btnPausar').style.display = estaLendo?'':'none';
+    if(q('btnParar'))  q('btnParar').style.display  = (estaLendo||estaPausado)?'':'none';
+    if(q('audioOnda')) q('audioOnda').style.display = estaLendo?'inline-flex':'none';
+    statusAudio(estaLendo?'Lendo em voz alta…':(estaPausado?'Pausado':''));
+  }
+  function statusAudio(t){ const e=document.getElementById('audioStatus'); if(e) e.textContent=t; }
+
+  window.addEventListener('beforeunload', pararTutorial);
+  document.addEventListener('visibilitychange', ()=>{ if(document.hidden) pararTutorial(); });
+
+  /* O ping de "FARME_ATIVIDADE_PRONTA" já é enviado pelo bloco de
+     integração com o iframe no fim do arquivo — não duplicar aqui. */
+  return { st, lerTutorial, pausarTutorial, pararTutorial, dentroDoFarme };
+})();
+/* ════════════════════ FIM DO KIT FARME AURA v2 (áudio) ════════════════════ */
+
 // ══════════ GUARDA ANTI-CLIQUE-RÁPIDO — FARME AURA v11 ══════════
 const FARME_GUARDA={travado:false,ultimoEm:0,MIN_MS:400,DESTRAVA_MS:900};
 function farmePodeResponder(){
@@ -236,6 +415,7 @@ function farmeDesabilitarBotoes(s){
   document.querySelectorAll(s||'.alternativa, .opcao, .btn-resposta').forEach(b=>{b.disabled=true;b.style.pointerEvents='none';b.style.opacity='.65';});
 }
 function show(id){
+  if(id!=='tutorial') FarmeKit.pararTutorial();
   document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
   document.querySelectorAll('.nav-btn').forEach(b=>b.classList.remove('active'));
   document.getElementById(id).classList.add('active');
@@ -427,12 +607,13 @@ const DESASTRES=[
 
 let cf=null, practiceScore=0;
 
+const GX_MEIO=(30+126)/2; // meio do eixo atração↔repulsão (78) — ponto neutro de partida
 function resetFronteiras(){
   cf={ fase:0, f1feita:false, f2feita:false, ptsF1:0, ptsF2:0,
     ordemP:shuffleArray(PESSOAS.map((_,i)=>i)), curP:0, acertosP:0, errosP:0, guicheSel:null,
     ordemD:shuffleArray(DESASTRES.map((_,i)=>i)), curD:0, acertosD:0, errosD:0, causaSel:null, impSel:null,
     revelar:null, fb:null, finalizado:false,
-    anim:{x:14, alvo:null, andando:false} };
+    anim:{x:GX_MEIO, alvo:null, andando:false} };
   practiceScore=0;
   document.getElementById('cfWrapOuter').innerHTML=`
     <div class="cf-instructions" id="cfInstr"></div>
@@ -474,7 +655,7 @@ function iniciarFase(n){
   if(n===1&&cf.f1feita) return;
   if(n===2&&cf.f2feita) return;
   sfxClick(); cf.fase=n; cf.revelar=null; cf.fb=null;
-  if(n===1){ cf.curP=0; cf.guicheSel=null; cf.anim={x:14,alvo:null,andando:false}; }
+  if(n===1){ cf.curP=0; cf.guicheSel=null; cf.anim={x:GX_MEIO,alvo:null,andando:false}; }
   else { cf.curD=0; cf.causaSel=null; cf.impSel=null; }
   renderPratica();
 }
@@ -512,6 +693,11 @@ function desenharTerminal(){
   }
   guiche(GX_ATR,'#22c55e','ATRACAO');
   guiche(GX_REP,'#ef4444','REPULSAO');
+  // eixo atração ↔ repulsão: linha no chão ligando os dois guichês,
+  // com uma marca no meio — o ponto neutro de onde a pessoa sempre parte
+  g.strokeStyle='#3a4a63'; g.lineWidth=1;
+  g.beginPath(); g.moveTo(GX_ATR,66.5); g.lineTo(GX_REP,66.5); g.stroke();
+  g.fillStyle='#5d7c90'; g.fillRect(GX_MEIO-0.5,63,1,7);
   // ônibus no centro
   g.fillStyle='#2a3648'; g.fillRect(64,40,32,16);
   g.fillStyle='#8fd0ff'; g.fillRect(67,43,8,6); g.fillRect(77,43,8,6);
@@ -547,6 +733,10 @@ function renderTerminal(){
     <div class="cf-console">
       <div class="cf-tela"><canvas id="cfCanvas" width="${CW}" height="${CH}" aria-label="Posto de fronteira em pixel art"></canvas></div>
       <div class="cf-bezel"><span><span class="cf-led"></span>Terminal Fronteira</span><span>Ficha ${String(cf.curP+1).padStart(2,'0')}/${PESSOAS.length}</span></div>
+      <div class="cf-eixo-legenda">
+        <span class="cf-leg atr">🧲 <b>ATRAÇÃO</b> (esquerda) — o país recebe mais gente do que perde</span>
+        <span class="cf-leg rep"><b>REPULSÃO</b> (direita) 📤 — o país perde mais gente do que recebe</span>
+      </div>
       <div class="cf-ficha">
         <div class="cf-ficha-h"><span>▸ ficha de origem</span><span>${p.band} ${p.pais}</span></div>
         <div class="cf-ficha-t">${p.ficha}</div>
@@ -584,15 +774,17 @@ function encaminhar(id){
   cf.revelar=true;
   sfxCarimbo();
   renderTerminal();
-  /* a pessoa caminha até o guichê CERTO, para o aluno ver onde era */
-  animarAte(p.tipo==='atracao'?GX_ATR:GX_REP);
+  /* a pessoa caminha para o lado que O ALUNO escolheu — o movimento
+     mostra a decisão tomada. Acerto/erro já aparece no guichê (verde/
+     vermelho) e no texto; a caminhada não entrega a resposta certa. */
+  animarAte(id==='atracao'?GX_ATR:GX_REP);
 }
 function avancarFicha(){
   if(!cf||cf.finalizado||cf.fase!==1||!cf.revelar) return;
   sfxClick();
   const ultima=cf.curP>=PESSOAS.length-1;
   cf.revelar=null; cf.fb=null; cf.guicheSel=null;
-  cf.anim={x:14,alvo:null,andando:false};
+  cf.anim={x:GX_MEIO,alvo:null,andando:false};
   if(ultima){ concluirFase(1); } else { cf.curP++; renderTerminal(); }
   farmeLiberar();
 }
